@@ -182,3 +182,19 @@
 .test {
     border: 2px solid red;
 }
+
+.chat-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(/bg_chat.svg);
+}
+
+.primary-btn-gradient {
+    background: linear-gradient(to bottom, #6165ff 0%, #3a3d99 100%);
+}
