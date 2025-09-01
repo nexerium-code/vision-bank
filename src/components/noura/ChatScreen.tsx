@@ -45,7 +45,9 @@ export default function ChatScreen() {
 
             {/* Chat Input */}
             <div className="relative mb-8 px-4">
-                <Input placeholder="How may I help you today?" className="h-20 rounded-full border-white/8 bg-white/10 ps-10 pe-14 font-light text-white backdrop-blur-sm placeholder:text-white/60 md:text-xl" />
+                <div className="chat-input-focus">
+                    <Input placeholder="How may I help you today?" className="h-20 rounded-full border-transparent bg-white/10 ps-10 pe-14 font-light text-white backdrop-blur-sm placeholder:text-white/60 focus:border-transparent focus:ring-0 md:text-xl" />
+                </div>
                 <Button size="icon" className="absolute top-2 right-2 h-10 w-10 rounded-full bg-white/20 text-white hover:bg-white/30">
                     <Mic className="h-5 w-5" />
                 </Button>

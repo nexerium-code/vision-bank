@@ -198,3 +198,17 @@
 .primary-btn-gradient {
     background: linear-gradient(to bottom, #6165ff 0%, #3a3d99 100%);
 }
+
+.chat-input-focus {
+    position: relative;
+    border: 2px solid transparent;
+    background:
+        linear-gradient(#1a1a2e, #1a1a2e) padding-box,
+        linear-gradient(180deg, #8b5cf6 0%, rgba(139, 92, 246, 0.5) 60%, rgba(139, 92, 246, 0.4) 40%, transparent 100%) border-box;
+    border-radius: 9999px;
+}
+
+.chat-input-focus:focus-within {
+    outline: none;
+    box-shadow: 0 0 0 0 transparent;
+}
