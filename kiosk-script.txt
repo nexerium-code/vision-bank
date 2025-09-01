@@ -1,0 +1,42 @@
+@echo off
+REM ── Wait for internet (ping Cloudflare up to 60×5 s ≈ 5 min) ──────────────
+echo Waiting for internet connection …
+for /l %%i in (1,1,60) do (
+    ping -n 1 1.1.1.1 >nul
+    if not errorlevel 1 (
+        echo ✓ Internet detected.
+        goto :continue
+    )
+    timeout /t 5 >nul
+)
+echo ✗ No internet after 5 minutes – launching anyway.
+:continue
+
+REM ── Kill any straggling Chrome ─────────────────────────────────────────────
+taskkill /F /IM chrome.exe >nul 2>&1
+timeout /t 2 >nul
+
+REM ── 1) RIGHT screen (Display 1, primary) – true kiosk ──────────────────────
+start "" "C:\Program Files\Google\Chrome\Application\chrome.exe" ^
+  --new-window --kiosk "https://ewc.nexerium.com/screen-one" ^
+  --user-data-dir="%TEMP%\kiosk_profile_screen_one" ^
+  --no-first-run ^
+  --disable-infobars ^
+  --overscroll-history-navigation=0 ^
+  --disable-pinch ^
+  --disable-features=TranslateUI
+
+REM Give Windows a moment to create the first process
+timeout /t 3 >nul
+
+REM ── 2) LEFT screen (Display 2, secondary) – fullscreen ─────────────────────
+start "" "C:\Program Files\Google\Chrome\Application\chrome.exe" ^
+  --new-window "https://ewc.nexerium.com/result-one" ^
+  --user-data-dir="%TEMP%\kiosk_profile_result_one" ^
+  --window-position=-1920,0 ^
+  --start-fullscreen ^
+  --no-first-run ^
+  --disable-infobars ^
+  --overscroll-history-navigation=0 ^
+  --disable-pinch ^
+  --disable-features=TranslateUI
