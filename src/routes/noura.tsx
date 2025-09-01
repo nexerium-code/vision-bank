@@ -14,7 +14,7 @@ function RouteComponent() {
         <section className="bg-background relative h-[1920px] w-[1080px] overflow-hidden">
             <div className="chat-background" />
             {screen === "welcome" && <WelcomeScreen onClick={() => setScreen("chat")} />}
-            {screen === "chat" && <ChatScreen />}
+            {screen === "chat" && <ChatScreen onBack={() => setScreen("welcome")} />}
         </section>
     );
 }
