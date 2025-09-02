@@ -3,30 +3,65 @@ import { useState } from 'react';
 import { sendMessage } from '@/services/main.api';
 import { useMutation } from '@tanstack/react-query';
 
+type Message = {
+    id: string;
+    content: string;
+    role: "user" | "assistant";
+    isStreaming?: boolean;
+};
+
 export function useStreamingChat() {
-    const [response, setResponse] = useState<string>("");
-    const [isStreaming, setIsStreaming] = useState<boolean>(false);
+    const [messages, setMessages] = useState<Message[]>([]);
+
+    const addUserMessage = (content: string) => {
+        const userMessage: Message = {
+            id: Date.now().toString(),
+            content,
+            role: "user"
+        };
+        setMessages((prev) => [...prev, userMessage]);
+        return userMessage.id;
+    };
+
+    const addAssistantMessage = () => {
+        const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            content: "",
+            role: "assistant",
+            isStreaming: true
+        };
+        setMessages((prev) => [...prev, assistantMessage]);
+        return assistantMessage.id;
+    };
+
+    const updateAssistantMessage = (messageId: string, contentUpdater: (prev: string) => string, isComplete = false) => {
+        setMessages((prev) => prev.map((msg) => (msg.id === messageId ? { ...msg, content: contentUpdater(msg.content), isStreaming: !isComplete } : msg)));
+    };
 
     const streamMutation = useMutation({
         mutationFn: async (message: string) => {
             return new Promise<void>((resolve, reject) => {
-                setResponse("");
-                setIsStreaming(true);
+                // Add user message
+                addUserMessage(message);
+
+                // Add assistant message placeholder
+                const assistantMessageId = addAssistantMessage();
 
                 sendMessage(
                     message,
                     // onChunk
                     (content) => {
-                        setResponse((prev) => prev + content);
+                        updateAssistantMessage(assistantMessageId, (prev) => prev + content, false);
                     },
                     // onComplete
                     () => {
-                        setIsStreaming(false);
+                        updateAssistantMessage(assistantMessageId, (prev) => prev, true);
                         resolve();
                     },
                     // onError
                     (error) => {
-                        setIsStreaming(false);
+                        // Remove the assistant message if there was an error
+                        setMessages((prev) => prev.filter((msg) => msg.id !== assistantMessageId));
                         reject(error);
                     }
                 );
@@ -44,15 +79,9 @@ export function useStreamingChat() {
         }
     };
 
-    const clearResponse = () => {
-        setResponse("");
-    };
-
     return {
-        response,
-        isStreaming,
+        messages,
         sendMessage: sendChatMessage,
-        clearResponse,
         isLoading: streamMutation.isPending,
         error: streamMutation.error
     };

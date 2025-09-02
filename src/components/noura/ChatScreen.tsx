@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -13,7 +14,16 @@ type ChatScreenProps = {
 
 export default function ChatScreen({ onBack }: ChatScreenProps) {
     const form = useForm<MessageSchemaType>({ resolver: zodResolver(MessageSchema), defaultValues: MessageSchemaInitData });
-    const { response, isStreaming, sendMessage, clearResponse, isLoading } = useStreamingChat();
+    const { messages, sendMessage, isLoading } = useStreamingChat();
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     function onSubmit(values: MessageSchemaType) {
         if (values.message.trim() && !isLoading) {
@@ -28,25 +38,31 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
             <div className="flex items-center gap-4 border-b-2 border-b-[#1a1a2b] px-4 py-6">
                 <img src="/arrow_left_icon.svg" className="size-10 cursor-pointer" onClick={onBack} />
                 <h1 className="text-2xl font-medium text-white">Noura AI</h1>
-                <Button variant="ghost" size="sm" onClick={clearResponse} className="ml-auto text-white hover:bg-white/10">
-                    Clear
-                </Button>
             </div>
 
             {/* Main Content Area */}
-            <div className="flex flex-1 flex-col items-center justify-center">
-                {response ? (
-                    <div className="w-full max-w-4xl p-8">
-                        <div className="rounded-lg bg-gray-800 p-6 text-white">
-                            <div className="whitespace-pre-wrap">
-                                {response}
-                                {isStreaming && <span className="ml-1 animate-pulse">▋</span>}
-                            </div>
+            <div className="flex flex-1 flex-col">
+                {messages.length > 0 ? (
+                    <div className="flex-1 overflow-y-auto p-4">
+                        <div className="mx-auto max-w-4xl space-y-6">
+                            {messages.map((message) => (
+                                <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+                                    <div className={`max-w-[80%] rounded-lg px-4 py-3 ${message.role === "user" ? "bg-[#8184FF] text-white" : "bg-gray-800 text-white"}`}>
+                                        <div className="whitespace-pre-wrap">
+                                            {message.content}
+                                            {message.isStreaming && <span className="ml-1 animate-pulse">▋</span>}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            <div ref={messagesEndRef} />
                         </div>
                     </div>
                 ) : (
-                    <div className="mb-32">
-                        <h2 className="text-center text-4xl font-medium text-white">Hello!</h2>
+                    <div className="flex flex-1 flex-col items-center justify-center">
+                        <div className="mb-32">
+                            <h2 className="text-center text-4xl font-medium text-white">Hello!</h2>
+                        </div>
                     </div>
                 )}
             </div>
