@@ -1,13 +1,13 @@
 const ENDPOINT = import.meta.env.VITE_BE_ENDPOINT;
 
-export async function sendMessage(message: string, onChunk: (content: string) => void, onComplete: () => void, onError: (error: Error) => void) {
+export async function sendMessage(message: string, isNewChat: boolean, onChunk: (content: string) => void, onComplete: () => void, onError: (error: Error) => void) {
     try {
         const response = await fetch(`${ENDPOINT}/chat`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ message })
+            body: JSON.stringify({ message, isNewChat })
         });
 
         if (!response.ok) {

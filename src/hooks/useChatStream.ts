@@ -47,8 +47,12 @@ export function useStreamingChat() {
                 // Add assistant message placeholder
                 const assistantMessageId = addAssistantMessage();
 
+                // Check if this is the first message (new chat)
+                const isNewChat = messages.length === 0;
+
                 sendMessage(
                     message,
+                    isNewChat,
                     // onChunk
                     (content) => {
                         updateAssistantMessage(assistantMessageId, (prev) => prev + content, false);
