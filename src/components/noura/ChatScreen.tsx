@@ -15,8 +15,8 @@ type ChatScreenProps = {
 export default function ChatScreen({ onBack }: ChatScreenProps) {
     const form = useForm<MessageSchemaType>({ resolver: zodResolver(MessageSchema), defaultValues: MessageSchemaInitData });
     const { messages, sendMessage, isLoading } = useStreamingChat();
-    const messagesEndRef = useRef<HTMLDivElement>(null);
 
+    const messagesEndRef = useRef<HTMLDivElement>(null);
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -40,10 +40,10 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                 <h1 className="text-2xl font-medium text-white">Noura AI</h1>
             </div>
 
-            {/* Main Content Area */}
-            <div className="flex flex-1 flex-col">
+            {/* Messages Area - Scrollable */}
+            <div className="flex-1 overflow-hidden">
                 {messages.length > 0 ? (
-                    <div className="flex-1 overflow-y-auto p-4">
+                    <div className="h-full overflow-y-auto p-4">
                         <div className="mx-auto max-w-4xl space-y-6">
                             {messages.map((message) => (
                                 <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
@@ -59,10 +59,8 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                         </div>
                     </div>
                 ) : (
-                    <div className="flex flex-1 flex-col items-center justify-center">
-                        <div className="mb-32">
-                            <h2 className="text-center text-4xl font-medium text-white">Hello!</h2>
-                        </div>
+                    <div className="flex h-full items-center justify-center">
+                        <h2 className="mb-32 text-center text-4xl font-medium text-white">Hello!</h2>
                     </div>
                 )}
             </div>
