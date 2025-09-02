@@ -47,7 +47,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                         <div className="mx-auto max-w-4xl space-y-6">
                             {messages.map((message) => (
                                 <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                                    <div className={`max-w-[80%] rounded-lg px-4 py-3 ${message.role === "user" ? "bg-[#8184FF] text-white" : "bg-gray-800 text-white"}`}>
+                                    <div className={`max-w-[80%] rounded-lg border-2 px-4 py-3 text-white ${message.role === "user" ? "border-[#8184FF]" : "border-white/10 bg-white/10"}`}>
                                         <div className="whitespace-pre-wrap">
                                             {message.content}
                                             {message.isStreaming && <span className="ml-1 animate-pulse">▋</span>}
