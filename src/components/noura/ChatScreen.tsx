@@ -1,11 +1,23 @@
+import { useForm } from 'react-hook-form';
+
 import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { MessageSchema, MessageSchemaInitData, MessageSchemaType } from '@/services/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type ChatScreenProps = {
     onBack: () => void;
 };
 
 export default function ChatScreen({ onBack }: ChatScreenProps) {
+    const form = useForm<MessageSchemaType>({ resolver: zodResolver(MessageSchema), defaultValues: MessageSchemaInitData });
+
+    function onSubmit(values: MessageSchemaType) {
+        console.log(values);
+        form.reset(MessageSchemaInitData);
+    }
+
     return (
         <div className="relative z-10 flex h-full flex-col">
             {/* Header */}
@@ -44,13 +56,24 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
             </div>
 
             {/* Chat Input */}
-            <div className="relative mb-8 px-4">
-                <div className="chat-input-focus">
-                    <Input placeholder="How may I help you today?" className="h-20 rounded-full border-transparent bg-white/10 ps-10 pe-14 font-light text-white backdrop-blur-sm placeholder:text-white/60 focus:border-transparent focus:ring-0 md:text-xl" />
-                </div>
-                <img src="/send_button.svg" className="absolute top-0.5 right-6 z-10 size-20" />
-                <img src="/mask_light.svg" className="absolute right-6 bottom-0 rounded-full" />
-            </div>
+            <Form {...form}>
+                <form className="relative mb-8 px-4" onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                            <FormItem className="chat-input-focus">
+                                <FormControl className="chat-input-focus">
+                                    <Input placeholder="Enter Name..." className="border-primary h-20 border-2 px-12 text-3xl placeholder:text-3xl placeholder:text-white/70 md:text-3xl" {...field} autoComplete="off" />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <Button type="submit">Submit</Button>
+                    {/* <img src="/send_button.svg" className="absolute top-0.5 right-6 z-10 size-20" />
+                    <img src="/mask_light.svg" className="absolute right-6 bottom-0 rounded-full" /> */}
+                </form>
+            </Form>
         </div>
     );
 }

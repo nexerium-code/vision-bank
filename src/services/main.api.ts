@@ -7,7 +7,7 @@ export type ExampleType = {
     image: string;
 };
 
-export async function exampleFunction(payload: FormData) {
-    const response = await API.POST<ExampleType>(ENDPOINT, payload);
+export async function sendMessage(payload: object) {
+    const response = await API.POST<ExampleType>(`${ENDPOINT}/chat`, payload);
     return response;
 }

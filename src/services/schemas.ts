@@ -1,12 +1,10 @@
 import { z } from 'zod';
 
-import { ExampleTypes } from '@/lib/enums';
-
-export const ExampleSchema = z.object({
-    team: z.enum(Object.values(ExampleTypes) as [string, ...string[]], { required_error: "type-not-specified", message: "type-not-specified" })
+export const MessageSchema = z.object({
+    message: z.string({ required_error: "Message is required" }).max(12, "Message must be at most 12 characters").nonempty("Message is required")
 });
-export type ExampleSchemaType = z.infer<typeof ExampleSchema>;
+export type MessageSchemaType = z.infer<typeof MessageSchema>;
 
-export const ExampleSchemaInitData: ExampleSchemaType = {
-    team: "FALCONS"
+export const MessageSchemaInitData: MessageSchemaType = {
+    message: ""
 };
