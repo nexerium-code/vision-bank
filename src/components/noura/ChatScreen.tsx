@@ -55,21 +55,30 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                 {messages.length > 0 && (
                     <div className="h-full overflow-y-auto p-4">
                         <div className="mx-auto max-w-4xl space-y-6">
-                            {messages.map((message) => (
-                                <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                                    <div className={`max-w-[80%] rounded-lg border-2 px-4 py-3 text-white ${message.role === "user" ? "border-[#8184FF]" : "border-white/10 bg-white/10"}`}>
-                                        <div className="whitespace-pre-wrap">
-                                            {message.content}
-                                            {message.isStreaming && <span className="ml-1 animate-pulse">▋</span>}
+                            {messages
+                                .filter((message) => !(message.role === "assistant" && message.content === "" && isLoading))
+                                .map((message) => (
+                                    <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+                                        <div className={`max-w-[80%] rounded-lg border-2 px-4 py-3 text-white ${message.role === "user" ? "border-[#8184FF]" : "border-white/10 bg-white/10"}`}>
+                                            <div className="whitespace-pre-wrap">
+                                                {message.content}
+                                                {message.isStreaming && <span className="ml-1 animate-pulse">|</span>}
+                                            </div>
                                         </div>
                                     </div>
+                                ))}
+                            {isLoading && messages.some((msg) => msg.role === "assistant" && msg.isStreaming && msg.content === "") && (
+                                <div className="flex justify-start">
+                                    <div className="max-w-[80%] rounded-lg border-2 border-white/10 bg-white/10 px-4 py-3 text-white">
+                                        <div className="animate-pulse text-white/70">thinking...</div>
+                                    </div>
                                 </div>
-                            ))}
+                            )}
                             <div ref={messagesEndRef} />
                         </div>
                     </div>
                 )}
-                {messages.length === 0 && (
+                {messages.length === 0 && !isLoading && (
                     <div className="flex h-full items-center justify-center">
                         <h2 className="mb-32 text-center text-4xl font-medium text-white">Hello!</h2>
                     </div>
