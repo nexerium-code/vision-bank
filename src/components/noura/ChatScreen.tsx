@@ -17,18 +17,28 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
     const { messages, sendMessage, isLoading } = useStreamingChat();
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
+    const inputRef = useRef<HTMLInputElement>(null);
 
+    // Scroll to bottom when messages change
     useEffect(() => {
-        scrollToBottom();
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    // Auto-focus input when message streaming ends
+    useEffect(() => {
+        if (!isLoading && messages.length > 0) {
+            setTimeout(() => {
+                inputRef.current?.focus();
+            }, 100);
+        }
+    }, [isLoading, messages.length]);
+
+    // Submit form
     function onSubmit(values: MessageSchemaType) {
         if (values.message.trim() && !isLoading) {
             sendMessage(values.message);
             form.reset(MessageSchemaInitData);
+            inputRef.current?.focus();
         }
     }
 
@@ -68,7 +78,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
             {/* Action Buttons */}
             <div className="mb-8 px-4">
                 <div className="flex flex-wrap gap-3">
-                    <Button variant="outline" className="h-14 rounded-full border-2 border-[#8184FF] bg-transparent px-6 text-base text-white hover:bg-white/10" onClick={() => sendMessage("Tell me about joining Vision Bank")} disabled={isLoading}>
+                    <Button variant="outline" className="h-14 rounded-full border-2 border-[#8184FF] bg-transparent px-6 text-base text-white hover:bg-white/10" onClick={() => sendMessage("I want to join Vision Bank")} disabled={isLoading}>
                         <img src="/person_icon.svg" className="size-6" />
                         Join Vision Bank
                     </Button>
@@ -80,7 +90,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                         <img src="/question_icon.svg" className="size-6" />
                         FAQ
                     </Button>
-                    <Button variant="outline" className="h-14 rounded-full border-2 border-[#8184FF] bg-transparent px-6 text-base text-white hover:bg-white/10" onClick={() => sendMessage("What offers do you have?")} disabled={isLoading}>
+                    <Button variant="outline" className="h-14 rounded-full border-2 border-[#8184FF] bg-transparent px-6 text-base text-white hover:bg-white/10" onClick={() => sendMessage("What offers do you currently have?")} disabled={isLoading}>
                         <img src="/request_icon.svg" className="size-6" />
                         Offers
                     </Button>
@@ -96,7 +106,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                         render={({ field }) => (
                             <FormItem className="chat-input-focus">
                                 <FormControl className="chat-input-focus">
-                                    <Input placeholder="Type your message..." className="border-primary h-20 border-2 px-12 text-3xl placeholder:text-3xl placeholder:text-white/70 md:text-3xl" {...field} autoComplete="off" disabled={isLoading} />
+                                    <Input placeholder="Type your message..." className="border-primary h-20 border-2 px-12 text-3xl placeholder:text-3xl placeholder:text-white/70 md:text-3xl" {...field} ref={inputRef} autoComplete="off" autoFocus disabled={isLoading} />
                                 </FormControl>
                             </FormItem>
                         )}
