@@ -11,13 +11,20 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as NouraImport } from './routes/noura'
+import { Route as ScreenTwoImport } from './routes/screen-two'
+import { Route as ScreenOneImport } from './routes/screen-one'
 
 // Create/Update Routes
 
-const NouraRoute = NouraImport.update({
-  id: '/noura',
-  path: '/noura',
+const ScreenTwoRoute = ScreenTwoImport.update({
+  id: '/screen-two',
+  path: '/screen-two',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ScreenOneRoute = ScreenOneImport.update({
+  id: '/screen-one',
+  path: '/screen-one',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -25,11 +32,18 @@ const NouraRoute = NouraImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/noura': {
-      id: '/noura'
-      path: '/noura'
-      fullPath: '/noura'
-      preLoaderRoute: typeof NouraImport
+    '/screen-one': {
+      id: '/screen-one'
+      path: '/screen-one'
+      fullPath: '/screen-one'
+      preLoaderRoute: typeof ScreenOneImport
+      parentRoute: typeof rootRoute
+    }
+    '/screen-two': {
+      id: '/screen-two'
+      path: '/screen-two'
+      fullPath: '/screen-two'
+      preLoaderRoute: typeof ScreenTwoImport
       parentRoute: typeof rootRoute
     }
   }
@@ -38,33 +52,38 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/noura': typeof NouraRoute
+  '/screen-one': typeof ScreenOneRoute
+  '/screen-two': typeof ScreenTwoRoute
 }
 
 export interface FileRoutesByTo {
-  '/noura': typeof NouraRoute
+  '/screen-one': typeof ScreenOneRoute
+  '/screen-two': typeof ScreenTwoRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/noura': typeof NouraRoute
+  '/screen-one': typeof ScreenOneRoute
+  '/screen-two': typeof ScreenTwoRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/noura'
+  fullPaths: '/screen-one' | '/screen-two'
   fileRoutesByTo: FileRoutesByTo
-  to: '/noura'
-  id: '__root__' | '/noura'
+  to: '/screen-one' | '/screen-two'
+  id: '__root__' | '/screen-one' | '/screen-two'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  NouraRoute: typeof NouraRoute
+  ScreenOneRoute: typeof ScreenOneRoute
+  ScreenTwoRoute: typeof ScreenTwoRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  NouraRoute: NouraRoute,
+  ScreenOneRoute: ScreenOneRoute,
+  ScreenTwoRoute: ScreenTwoRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +96,15 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/noura"
+        "/screen-one",
+        "/screen-two"
       ]
     },
-    "/noura": {
-      "filePath": "noura.tsx"
+    "/screen-one": {
+      "filePath": "screen-one.tsx"
+    },
+    "/screen-two": {
+      "filePath": "screen-two.tsx"
     }
   }
 }
