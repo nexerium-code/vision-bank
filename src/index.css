@@ -176,7 +176,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--border);
+    background: #7576a173;
 }
 
 .test {

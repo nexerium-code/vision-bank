@@ -68,9 +68,11 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                                     </div>
                                 ))}
                             {isLoading && messages.some((msg) => msg.role === "assistant" && msg.isStreaming && msg.content === "") && (
-                                <div className="flex justify-start">
-                                    <div className="max-w-[80%] rounded-lg border-2 border-white/10 bg-white/10 px-4 py-3 text-white">
-                                        <div className="animate-pulse text-white/70">thinking...</div>
+                                <div className="flex items-center justify-start px-4 py-2">
+                                    <div className="flex space-x-1">
+                                        <div className="size-3 animate-pulse rounded-full bg-[#8184FF]"></div>
+                                        <div className="size-3 animate-pulse rounded-full bg-[#8184FF]" style={{ animationDelay: "0.2s" }}></div>
+                                        <div className="size-3 animate-pulse rounded-full bg-[#8184FF]" style={{ animationDelay: "0.4s" }}></div>
                                     </div>
                                 </div>
                             )}
