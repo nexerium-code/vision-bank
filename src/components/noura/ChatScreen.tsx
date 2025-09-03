@@ -111,9 +111,9 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="absolute top-1/2 right-6 -translate-y-1/2" size="icon" disabled={isLoading || !form.watch("message")?.trim()}>
-                        <img src="/send_button.svg" className="size-8" />
-                    </Button>
+                    <button type="submit" className="btn-unstyled absolute top-1/2 right-6 -translate-y-1/2" disabled={isLoading || !form.watch("message")?.trim()}>
+                        <img src="/send_button.svg" className="size-18" />
+                    </button>
                 </form>
             </Form>
         </div>
