@@ -9,7 +9,7 @@ export const Route = createFileRoute("/noura")({
 });
 
 function RouteComponent() {
-    const [screen, setScreen] = useState<"welcome" | "chat">("chat");
+    const [screen, setScreen] = useState<"welcome" | "chat">("welcome");
     return (
         <section className="bg-background relative h-[1920px] w-[1080px] overflow-hidden">
             <div className="chat-background" />

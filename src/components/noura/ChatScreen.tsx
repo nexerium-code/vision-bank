@@ -52,7 +52,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
 
             {/* Messages Area - Scrollable */}
             <div className="flex-1 overflow-hidden">
-                {messages.length > 0 ? (
+                {messages.length > 0 && (
                     <div className="h-full overflow-y-auto p-4">
                         <div className="mx-auto max-w-4xl space-y-6">
                             {messages.map((message) => (
@@ -68,7 +68,8 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                             <div ref={messagesEndRef} />
                         </div>
                     </div>
-                ) : (
+                )}
+                {messages.length === 0 && (
                     <div className="flex h-full items-center justify-center">
                         <h2 className="mb-32 text-center text-4xl font-medium text-white">Hello!</h2>
                     </div>
