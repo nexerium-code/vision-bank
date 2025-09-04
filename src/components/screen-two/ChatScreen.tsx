@@ -45,6 +45,13 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
         }
     }
 
+    // Emit transcript
+    function onEmit(transcript: string) {
+        form.setValue("message", transcript);
+        inputRef.current?.focus();
+        setSpeechToTextModalOpen(false);
+    }
+
     return (
         <div className="relative z-10 flex h-full flex-col">
             {/* Header */}
@@ -131,7 +138,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                     </button>
                 </form>
             </Form>
-            {speechToTextModalOpen && <SpeechToTextModal onClose={() => setSpeechToTextModalOpen(false)} />}
+            {speechToTextModalOpen && <SpeechToTextModal onEmit={onEmit} />}
         </div>
     );
 }

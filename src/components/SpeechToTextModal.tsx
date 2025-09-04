@@ -1,138 +1,39 @@
 "use client";
 
 import { MicOff } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 import { Button } from '@/components/ui/button';
 
-interface SpeechRecognitionEvent extends Event {
-    resultIndex: number;
-    results: SpeechRecognitionResultList;
-}
+type SpeechToTextModalProps = {
+    onEmit: (transcript: string) => void;
+};
 
-interface SpeechRecognitionErrorEvent extends Event {
-    error: string;
-    message?: string;
-}
-
-interface SpeechRecognition extends EventTarget {
-    continuous: boolean;
-    interimResults: boolean;
-    lang: string;
-    onstart: ((this: SpeechRecognition, ev: Event) => void) | null;
-    onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => void) | null;
-    onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => void) | null;
-    onend: ((this: SpeechRecognition, ev: Event) => void) | null;
-    start(): void;
-    stop(): void;
-}
-
-interface SpeechRecognitionConstructor {
-    new (): SpeechRecognition;
-}
-
-interface SpeechRecognitionResult {
-    readonly isFinal: boolean;
-    readonly length: number;
-    item(index: number): SpeechRecognitionAlternative;
-    [index: number]: SpeechRecognitionAlternative;
-}
-
-interface SpeechRecognitionResultList {
-    readonly length: number;
-    item(index: number): SpeechRecognitionResult;
-    [index: number]: SpeechRecognitionResult;
-}
-
-interface SpeechRecognitionAlternative {
-    readonly transcript: string;
-    readonly confidence: number;
-}
-
-interface SpeechToTextModalProps {
-    onClose: () => void;
-}
-
-export default function SpeechToTextModal({ onClose }: SpeechToTextModalProps) {
-    const [transcript, setTranscript] = useState("");
-    const recognitionRef = useRef<SpeechRecognition | null>(null);
+export default function SpeechToTextModal({ onEmit }: SpeechToTextModalProps) {
+    const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
 
     useEffect(() => {
-        // Check if speech recognition is supported
-        const SpeechRecognitionClass =
-            (
-                window as unknown as {
-                    SpeechRecognition?: SpeechRecognitionConstructor;
-                    webkitSpeechRecognition?: SpeechRecognitionConstructor;
-                }
-            ).SpeechRecognition ||
-            (
-                window as unknown as {
-                    SpeechRecognition?: SpeechRecognitionConstructor;
-                    webkitSpeechRecognition?: SpeechRecognitionConstructor;
-                }
-            ).webkitSpeechRecognition;
+        // Reset transcript and start listening
+        resetTranscript();
+        SpeechRecognition.startListening({
+            continuous: true,
+            language: "en-US"
+        });
 
-        if (SpeechRecognitionClass) {
-            recognitionRef.current = new SpeechRecognitionClass();
-
-            // Configure speech recognition
-            recognitionRef.current.continuous = true;
-            recognitionRef.current.interimResults = true;
-            recognitionRef.current.lang = "en-US";
-
-            // Event handlers
-            recognitionRef.current.onstart = () => {
-                console.log("Speech recognition started");
-            };
-
-            recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-                let finalTranscript = "";
-
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const result = event.results[i][0].transcript;
-                    if (event.results[i].isFinal) {
-                        finalTranscript += result + " ";
-                    }
-                }
-
-                // Append final results to existing transcript
-                if (finalTranscript) {
-                    setTranscript((prev) => (prev + finalTranscript).trim());
-                }
-            };
-
-            recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
-                console.error("Speech recognition error:", event.error);
-            };
-
-            recognitionRef.current.onend = () => {
-                console.log("Speech recognition ended");
-            };
-        }
-
+        // Cleanup
         return () => {
-            if (recognitionRef.current) {
-                recognitionRef.current.stop();
-            }
+            SpeechRecognition.stopListening();
         };
-    }, []);
+    }, [browserSupportsSpeechRecognition, resetTranscript]);
 
-    // Start listening when component mounts
-    useEffect(() => {
-        if (recognitionRef.current) {
-            setTranscript("");
-            recognitionRef.current.start();
-        }
-    }, []);
+    // Finish recording
+    function handleFinishRecording() {
+        onEmit(transcript);
+        SpeechRecognition.stopListening();
+    }
 
-    const handleFinishRecording = () => {
-        console.log("Final transcript:", transcript);
-        if (recognitionRef.current) {
-            recognitionRef.current.stop();
-        }
-        onClose();
-    };
+    if (!browserSupportsSpeechRecognition) return null;
 
     return (
         <div className="bg-background fixed inset-0 z-50 h-[1920px] w-[1080px] overflow-hidden">
