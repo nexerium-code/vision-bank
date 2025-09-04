@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useStreamingChat } from '@/hooks/useChatStream';
+import { useChatOneStream } from '@/hooks/useChatOneStream';
 import { MessageSchema, MessageSchemaInitData, MessageSchemaType } from '@/services/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -14,7 +14,7 @@ type ChatScreenProps = {
 
 export default function ChatScreen({ onBack }: ChatScreenProps) {
     const form = useForm<MessageSchemaType>({ resolver: zodResolver(MessageSchema), defaultValues: MessageSchemaInitData });
-    const { messages, sendMessage, isLoading } = useStreamingChat();
+    const { messages, sendMessage, isLoading } = useChatOneStream();
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);

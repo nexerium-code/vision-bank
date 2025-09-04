@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { sendMessage } from '@/services/main.api';
+import { sendChatOneMessage } from '@/services/main.api';
 import { useMutation } from '@tanstack/react-query';
 
 type Message = {
@@ -10,7 +10,7 @@ type Message = {
     isStreaming?: boolean;
 };
 
-export function useStreamingChat() {
+export function useChatOneStream() {
     const [messages, setMessages] = useState<Message[]>([]);
 
     const addUserMessage = (content: string) => {
@@ -50,7 +50,7 @@ export function useStreamingChat() {
                 // Check if this is the first message (new chat)
                 const isNewChat = messages.length === 0;
 
-                sendMessage(
+                sendChatOneMessage(
                     message,
                     isNewChat,
                     // onChunk
