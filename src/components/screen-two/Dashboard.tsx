@@ -1,6 +1,6 @@
 export default function Dashboard() {
     return (
-        <div className="relative z-10 flex h-full flex-col px-6 py-8 text-white">
+        <div className="test relative z-10 flex h-full flex-col overflow-y-auto px-6 py-8 text-white">
             {/* Header */}
             <div className="mb-12 flex items-center justify-between">
                 {/* User Welcome */}
