@@ -1,52 +1,52 @@
 export default function Dashboard() {
     return (
-        <div className="test relative z-10 flex h-full flex-col overflow-y-auto px-6 py-8 text-white">
+        <div className="scrollbar-hide relative z-10 flex h-full flex-col overflow-y-auto p-6 text-white">
             {/* Header */}
-            <div className="mb-12 flex items-center justify-between">
+            <div className="mb-6 flex items-center justify-between">
                 {/* User Welcome */}
                 <div className="flex items-center gap-3">
-                    <img src="/user_icon.svg" alt="user" className="size-14" />
+                    <img src="/user_icon.svg" alt="user" className="size-10" />
                     <div>
-                        <p className="text-xl font-bold">Welcome</p>
-                        <p className="text-xl">Hamad</p>
+                        <p className="text-sm font-bold">Welcome</p>
+                        <p className="text-sm">Hamad</p>
                     </div>
                 </div>
-                <img src="/notification_icon.svg" alt="notification" className="size-16" />
+                <img src="/notification_icon.svg" alt="notification" className="size-12" />
             </div>
 
             {/* Total Balance */}
-            <div className="mb-18 flex flex-col items-center justify-center gap-3">
+            <div className="mb-8 flex flex-col items-center justify-center gap-3">
                 <div className="flex items-center justify-center gap-2">
-                    <p className="text-[25px] font-bold">Total available balance</p>
-                    <img src="eye_icon.svg" alt="eyeicon" className="size-9" />
+                    <p className="text-base font-bold">Total available balance</p>
+                    <img src="eye_icon.svg" alt="eyeicon" className="size-6" />
                 </div>
                 <div className="flex items-center justify-center gap-2">
                     <img src="sar_icon.svg" alt="eyeicon" className="size-9" />
-                    <p className="text-5xl font-bold">100,000.00</p>
+                    <p className="text-3xl font-bold">100,000.00</p>
                 </div>
             </div>
 
             {/* Current Account Card */}
-            <div className="mb-16 flex gap-8 rounded-2xl border-2 border-white/20 bg-white/5 p-6">
-                <img src="wallet_icon.svg" alt="walleticon" className="size-14" />
+            <div className="mb-8 flex gap-5 rounded-2xl border-2 border-white/8 bg-white/6 p-4">
+                <img src="wallet_icon.svg" alt="walleticon" className="size-10" />
                 <div className="flex flex-1 items-center justify-between">
-                    <div className="flex flex-col gap-2">
-                        <p className="text-xl font-light">Current Account</p>
-                        <div className="flex items-center justify-center gap-2">
-                            <img src="sar_icon.svg" alt="eyeicon" className="size-9" />
-                            <p className="text-4xl font-bold">48,000</p>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-sm font-light">Current Account</p>
+                        <div className="flex items-center gap-1">
+                            <img src="sar_icon.svg" alt="eyeicon" className="size-5" />
+                            <p className="text-2xl font-semibold">48,000</p>
                         </div>
-                        <p className="text-xl font-light">46866108533000</p>
+                        <p className="text-sm font-light">46866108533000</p>
                     </div>
                     <div className="flex h-full flex-col items-end justify-between">
-                        <img src="share_icon.svg" alt="shareicon" className="size-10" />
-                        <img src="status_icon.svg" alt="statusicon" className="h-6" />
+                        <img src="share_icon.svg" alt="shareicon" className="size-6" />
+                        <img src="status_icon.svg" alt="statusicon" className="h-6 w-[54px]" />
                     </div>
                 </div>
             </div>
 
             {/* Noura Section */}
-            <div className="mb-4 flex items-center justify-between border-b-3 border-b-white/5 pb-4">
+            <div className="mb-4 flex items-center justify-between border-b-2 border-b-white/8 pb-4">
                 <div className="flex items-center justify-center gap-3">
                     <img src="io_blob_raw.svg" alt="nouraicon" className="size-12" />
                     <p className="text-3xl font-semibold">Noura</p>
