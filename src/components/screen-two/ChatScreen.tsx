@@ -103,18 +103,18 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                     <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me an account summary")} disabled={isLoading}>
                         Account Summary
                     </Button>
-                    <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me a spending summary")} disabled={isLoading}>
-                        Spending Summary
-                    </Button>
-                    <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me a smart budgeting summary")} disabled={isLoading}>
-                        Smart Budgeting
-                    </Button>
                     <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me a savings goal")} disabled={isLoading}>
                         Savings Goal
+                    </Button>
+                    <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me a spending summary")} disabled={isLoading}>
+                        Spending Summary
                     </Button>
                     <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("I want to perform a transfer")} disabled={isLoading}>
                         Perform a Transfer
                     </Button>
+                    {/* <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me a smart budgeting summary")} disabled={isLoading}>
+                        Smart Budgeting
+                    </Button> */}
                 </div>
             </div>
 
@@ -139,7 +139,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                     <img src="/mask_light.svg" className="absolute top-1/2 right-[25px] z-10 h-[64px] w-[108px] -translate-y-1/2 rounded-full" alt="" />
                 </form>
             </Form>
-            {speechToTextModalOpen && <SpeechToTextModal onEmit={onEmit} />}
+            {speechToTextModalOpen && <SpeechToTextModal onBack={onBack} onEmit={onEmit} />}
         </div>
     );
 }

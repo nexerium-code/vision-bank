@@ -9,7 +9,7 @@ export const Route = createFileRoute("/screen-two")({
 });
 
 function RouteComponent() {
-    const [screen, setScreen] = useState<"dashboard" | "chat">("dashboard");
+    const [screen, setScreen] = useState<"dashboard" | "chat">("chat");
     return (
         <section className="flex h-screen items-center justify-center bg-white">
             <div className="bg-background relative h-[844px] w-[390px] overflow-hidden rounded-2xl">

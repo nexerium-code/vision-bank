@@ -136,7 +136,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                     <img src="/mask_light.svg" className="absolute top-1/2 right-[25px] z-10 h-[64px] w-[108px] -translate-y-1/2 rounded-full" alt="" />
                 </form>
             </Form>
-            {speechToTextModalOpen && <SpeechToTextModal onEmit={onEmit} />}
+            {speechToTextModalOpen && <SpeechToTextModal onBack={onBack} onEmit={onEmit} />}
         </div>
     );
 }

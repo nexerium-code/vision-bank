@@ -1,16 +1,14 @@
 "use client";
 
-import { MicOff } from 'lucide-react';
 import { useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-import { Button } from '@/components/ui/button';
-
 type SpeechToTextModalProps = {
+    onBack: () => void;
     onEmit: (transcript: string) => void;
 };
 
-export default function SpeechToTextModal({ onEmit }: SpeechToTextModalProps) {
+export default function SpeechToTextModal({ onBack, onEmit }: SpeechToTextModalProps) {
     const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
 
     useEffect(() => {
@@ -36,21 +34,25 @@ export default function SpeechToTextModal({ onEmit }: SpeechToTextModalProps) {
     if (!browserSupportsSpeechRecognition) return null;
 
     return (
-        <div className="bg-background fixed inset-0 z-50 h-[844px] w-[390px] overflow-hidden rounded-2xl">
+        <div className="bg-background absolute inset-0 z-50 h-[844px] w-[390px] overflow-hidden rounded-2xl">
             <div className="chat-background" />
-            <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
+            <div className="relative z-10 flex h-full flex-col">
+                {/* Header */}
+                <div className="flex items-center border-b-2 border-b-[#1a1a2b] p-4">
+                    <img src="/arrow_left_icon.svg" className="size-10 cursor-pointer" onClick={onBack} />
+                    <h1 className="text-base font-medium text-white">Noura AI</h1>
+                </div>
+
                 {/* Simple listening text */}
-                <div className="mb-8 flex items-center justify-center gap-2">
+                <div className="flex flex-1 items-center justify-center gap-2">
                     <div className="h-6 w-6 animate-pulse rounded-full bg-green-500"></div>
                     <span className="text-xl font-medium text-white">Listening...</span>
                 </div>
 
                 {/* Finish button at bottom */}
-                <div className="absolute bottom-8">
-                    <Button onClick={handleFinishRecording} size="lg" className="gap-2 px-8 py-4">
-                        <MicOff className="h-5 w-5" />
-                        Finish Recording
-                    </Button>
+                <div className="flex items-center justify-between px-6 pb-6">
+                    <img src="chat_icon.svg" alt="chaticon" className="size-12 cursor-pointer" onClick={handleFinishRecording} />
+                    <img src="close_icon.svg" alt="closeicon" className="size-12 cursor-pointer" onClick={handleFinishRecording} />
                 </div>
             </div>
         </div>
