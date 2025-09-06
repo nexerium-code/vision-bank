@@ -16,9 +16,9 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
     useEffect(() => {
-        const preventContextMenu = (e: MouseEvent) => e.preventDefault();
-        window.addEventListener("contextmenu", preventContextMenu);
-        return () => window.removeEventListener("contextmenu", preventContextMenu);
+        // const preventContextMenu = (e: MouseEvent) => e.preventDefault();
+        // window.addEventListener("contextmenu", preventContextMenu);
+        // return () => window.removeEventListener("contextmenu", preventContextMenu);
     }, []);
 
     return (

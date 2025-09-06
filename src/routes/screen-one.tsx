@@ -11,10 +11,12 @@ export const Route = createFileRoute("/screen-one")({
 function RouteComponent() {
     const [screen, setScreen] = useState<"welcome" | "chat">("welcome");
     return (
-        <section className="bg-background relative h-[1920px] w-[1080px] overflow-hidden">
-            <div className="chat-background" />
-            {screen === "welcome" && <WelcomeScreen onClick={() => setScreen("chat")} />}
-            {screen === "chat" && <ChatScreen onBack={() => setScreen("welcome")} />}
+        <section className="flex h-screen items-center justify-center bg-white">
+            <section className="bg-background relative h-[844px] w-[390px] overflow-hidden rounded-2xl">
+                <div className="chat-background" />
+                {screen === "welcome" && <WelcomeScreen onClick={() => setScreen("chat")} />}
+                {screen === "chat" && <ChatScreen onBack={() => setScreen("welcome")} />}
+            </section>
         </section>
     );
 }

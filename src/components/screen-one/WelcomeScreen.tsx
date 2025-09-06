@@ -6,34 +6,32 @@ type WelcomeScreenProps = {
 
 export default function WelcomeScreen({ onClick }: WelcomeScreenProps) {
     return (
-        <div className="relative z-10 flex h-full flex-col items-center px-8">
+        <div className="pt relative z-10 flex h-full flex-col items-center p-[50px]">
             {/* Language Switcher */}
-            <div className="absolute top-8 right-10">
-                <Button variant="outline" size="icon" className="rounded-xl border-2 border-white/40 bg-transparent p-5 text-lg font-medium text-white transition-colors hover:bg-white/10" onClick={onClick}>
-                    ع
-                </Button>
+            <div className="flex w-full items-center justify-end">
+                <img src="/lang_select.svg" alt="Vision Bank Logo" className="size-[44px]" />
             </div>
 
             {/* Logo */}
-            <img src="/logo.svg" alt="Vision Bank Logo" className="mt-96 mb-30 h-[400px] w-[225px]" />
+            <img src="/logo.svg" alt="Vision Bank Logo" className="mt-18 mb-18 h-[140px] w-[135px]" />
 
             {/* Action Buttons */}
-            <div className="flex w-[800px] flex-col gap-8">
-                <Button className="primary-btn-gradient h-[85px] w-full rounded-full border-0 text-2xl font-medium text-white transition-opacity hover:opacity-90" variant="default" onClick={onClick}>
+            <div className="mb-auto flex flex-col gap-6">
+                <Button className="primary-btn-gradient h-[56px] w-[290px] rounded-full border-0 text-base font-medium text-white transition-opacity hover:opacity-90" variant="default" onClick={onClick}>
                     Login
                 </Button>
-                <Button className="h-[85px] rounded-full border-3 border-[#8184FF] bg-transparent text-2xl font-medium text-white transition-colors hover:bg-white/10" variant="outline" onClick={onClick}>
+                <Button className="h-[56px] w-[290px] rounded-full border-2 border-[#8184FF] bg-transparent text-base font-medium text-white transition-colors hover:bg-white/10" variant="outline" onClick={onClick}>
                     Join Now
                 </Button>
             </div>
 
             {/* Bottom Right Logo */}
-            <img src="/io_blob.svg" alt="IO Blob" className="absolute right-14 bottom-32 size-28" onClick={onClick} />
+            <div className="-me-11 flex w-full items-center justify-end">
+                <img src="/io_blob.svg" alt="IO Blob" className="size-16" onClick={onClick} />
+            </div>
 
             {/* Bottom Center Text */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 transform">
-                <p className="text-sm text-white/60">Vision Bank 0.0.15</p>
-            </div>
+            <p className="mt-1 text-xs text-white">Vision Bank 0.0.15</p>
         </div>
     );
 }
