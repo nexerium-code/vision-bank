@@ -55,13 +55,18 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
     return (
         <div className="relative z-10 flex h-full flex-col">
             {/* Header */}
-            <div className="flex items-center gap-4 border-b-2 border-b-[#1a1a2b] px-4 py-6">
+            <div className="flex items-center border-b-2 border-b-[#1a1a2b] p-4">
                 <img src="/arrow_left_icon.svg" className="size-10 cursor-pointer" onClick={onBack} />
-                <h1 className="text-2xl font-medium text-white">Noura AI</h1>
+                <h1 className="text-base font-medium text-white">Noura AI</h1>
             </div>
 
             {/* Messages Area - Scrollable */}
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-hidden p-6">
+                {messages.length === 0 && !isLoading && (
+                    <div className="flex h-full items-center justify-center">
+                        <h2 className="text-center text-2xl font-medium text-[#F5F5FF]">Hello!</h2>
+                    </div>
+                )}
                 {messages.length > 0 && (
                     <div className="h-full overflow-y-auto p-4">
                         <div className="mx-auto max-w-4xl space-y-6">
@@ -69,7 +74,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                                 .filter((message) => !(message.role === "assistant" && message.content === "" && isLoading))
                                 .map((message) => (
                                     <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                                        <div className={`max-w-[80%] rounded-lg border-2 px-4 py-3 text-white ${message.role === "user" ? "border-[#8184FF]" : "border-white/10 bg-white/10"}`}>
+                                        <div className={`max-w-[80%] rounded-xl border-[1.2px] px-4 py-2 text-xs text-white ${message.role === "user" ? "border-[#8184FF]" : "border-white/8 bg-white/6"}`}>
                                             <div className="whitespace-pre-wrap">
                                                 {message.content}
                                                 {message.isStreaming && <span className="ml-1 animate-pulse">|</span>}
@@ -90,29 +95,24 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                         </div>
                     </div>
                 )}
-                {messages.length === 0 && !isLoading && (
-                    <div className="flex h-full items-center justify-center">
-                        <h2 className="mb-32 text-center text-4xl font-medium text-white">Hello!</h2>
-                    </div>
-                )}
             </div>
 
             {/* Action Buttons */}
-            <div className="mb-8 px-4">
-                <div className="flex flex-wrap gap-3">
-                    <Button variant="outline" className="h-14 rounded-full border-2 border-[#8184FF] bg-transparent px-6 text-base text-white hover:bg-white/10" onClick={() => sendMessage("Give me an account summary")} disabled={isLoading}>
+            <div className="mb-4 px-6">
+                <div className="flex flex-wrap gap-2.5">
+                    <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me an account summary")} disabled={isLoading}>
                         Account Summary
                     </Button>
-                    <Button variant="outline" className="h-14 rounded-full border-2 border-[#8184FF] bg-transparent px-6 text-base text-white hover:bg-white/10" onClick={() => sendMessage("Give me a spending summary")} disabled={isLoading}>
+                    <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me a spending summary")} disabled={isLoading}>
                         Spending Summary
                     </Button>
-                    <Button variant="outline" className="h-14 rounded-full border-2 border-[#8184FF] bg-transparent px-6 text-base text-white hover:bg-white/10" onClick={() => sendMessage("Give me a smart budgeting summary")} disabled={isLoading}>
+                    <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me a smart budgeting summary")} disabled={isLoading}>
                         Smart Budgeting
                     </Button>
-                    <Button variant="outline" className="h-14 rounded-full border-2 border-[#8184FF] bg-transparent px-6 text-base text-white hover:bg-white/10" onClick={() => sendMessage("Give me a savings goal")} disabled={isLoading}>
+                    <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("Give me a savings goal")} disabled={isLoading}>
                         Savings Goal
                     </Button>
-                    <Button variant="outline" className="h-14 rounded-full border-2 border-[#8184FF] bg-transparent px-6 text-base text-white hover:bg-white/10" onClick={() => sendMessage("I want to perform a transfer")} disabled={isLoading}>
+                    <Button variant="outline" className="h-8 rounded-full border-2 border-[#8184FF] bg-transparent px-4 text-xs text-white hover:bg-white/10" onClick={() => sendMessage("I want to perform a transfer")} disabled={isLoading}>
                         Perform a Transfer
                     </Button>
                 </div>
@@ -120,22 +120,23 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
 
             {/* Chat Input */}
             <Form {...form}>
-                <form className="relative mb-8 px-4" onSubmit={form.handleSubmit(onSubmit)}>
+                <form className="relative mb-8 overflow-hidden px-6" onSubmit={form.handleSubmit(onSubmit)}>
                     <FormField
                         control={form.control}
                         name="message"
                         render={({ field }) => (
                             <FormItem className="chat-input-focus">
                                 <FormControl className="chat-input-focus">
-                                    <Input placeholder="Type your message..." className="border-primary h-20 border-2 px-12 text-3xl placeholder:text-3xl placeholder:text-white/70 md:text-3xl" {...field} ref={inputRef} autoComplete="off" autoFocus disabled={isLoading} />
+                                    <Input placeholder="How may I help you today?" className="border-primary h-[64px] ps-5 pe-20 text-xs placeholder:text-[#A6A8BA] md:text-xs" {...field} ref={inputRef} autoComplete="off" autoFocus disabled={isLoading} />
                                 </FormControl>
                             </FormItem>
                         )}
                     />
                     <button type="submit" className="hidden" disabled={isLoading} />
-                    <button type="button" className="btn-unstyled absolute top-1/2 right-6 -translate-y-1/2" disabled={isLoading} onClick={() => setSpeechToTextModalOpen(true)}>
+                    <button type="button" className="btn-unstyled absolute top-1/2 right-[29px] z-20 -translate-y-1/2" disabled={isLoading} onClick={() => setSpeechToTextModalOpen(true)}>
                         <img src="/send_button.svg" className="size-18" />
                     </button>
+                    <img src="/mask_light.svg" className="absolute top-1/2 right-[25px] z-10 h-[64px] w-[108px] -translate-y-1/2 rounded-full" alt="" />
                 </form>
             </Form>
             {speechToTextModalOpen && <SpeechToTextModal onEmit={onEmit} />}

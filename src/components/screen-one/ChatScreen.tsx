@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,8 @@ import { useChatOneStream } from '@/hooks/useChatOneStream';
 import { MessageSchema, MessageSchemaInitData, MessageSchemaType } from '@/services/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import SpeechToTextModal from '../SpeechToTextModal';
+
 type ChatScreenProps = {
     onBack: () => void;
 };
@@ -16,6 +18,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
     const form = useForm<MessageSchemaType>({ resolver: zodResolver(MessageSchema), defaultValues: MessageSchemaInitData });
     const { messages, sendMessage, isLoading } = useChatOneStream();
 
+    const [speechToTextModalOpen, setSpeechToTextModalOpen] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -40,6 +43,13 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
             form.reset(MessageSchemaInitData);
             inputRef.current?.focus();
         }
+    }
+
+    // Emit transcript
+    function onEmit(transcript: string) {
+        form.setValue("message", transcript);
+        inputRef.current?.focus();
+        setSpeechToTextModalOpen(false);
     }
 
     return (
@@ -119,12 +129,14 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                             </FormItem>
                         )}
                     />
-                    <button type="submit" className="btn-unstyled absolute top-1/2 right-[29px] z-20 -translate-y-1/2" disabled={isLoading || !form.watch("message")?.trim()}>
+                    <button type="submit" className="hidden" disabled={isLoading} />
+                    <button type="button" className="btn-unstyled absolute top-1/2 right-[29px] z-20 -translate-y-1/2" disabled={isLoading} onClick={() => setSpeechToTextModalOpen(true)}>
                         <img src="/send_button.svg" className="size-14" />
                     </button>
                     <img src="/mask_light.svg" className="absolute top-1/2 right-[25px] z-10 h-[64px] w-[108px] -translate-y-1/2 rounded-full" alt="" />
                 </form>
             </Form>
+            {speechToTextModalOpen && <SpeechToTextModal onEmit={onEmit} />}
         </div>
     );
 }

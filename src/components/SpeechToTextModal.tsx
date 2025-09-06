@@ -36,7 +36,7 @@ export default function SpeechToTextModal({ onEmit }: SpeechToTextModalProps) {
     if (!browserSupportsSpeechRecognition) return null;
 
     return (
-        <div className="bg-background fixed inset-0 z-50 h-[1920px] w-[1080px] overflow-hidden">
+        <div className="bg-background fixed inset-0 z-50 h-[844px] w-[390px] overflow-hidden rounded-2xl">
             <div className="chat-background" />
             <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
                 {/* Simple listening text */}
